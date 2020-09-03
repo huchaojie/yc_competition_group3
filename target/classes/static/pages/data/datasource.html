@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,bike-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="Bookmark" href="/favicon.ico"/>
+	<link rel="Shortcut Icon" href="/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.css"/>
+	<link rel="stylesheet" type="text/css" href="../../static/lib/Hui-iconfont/1.0.8/iconfont.css"/>
+	<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/default/skin.css" id="skin"/>
+	<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css"/>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 数据分析 <span class="c-gray en">&gt;</span> 单车信息 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container" id="app">
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="PV">
+			<div class="btn btn-primary radius"> 总访问量:</div> <div class="btn radius"> {{pv}}</div>
+		</span>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-10 ">
+		<span class="UV">
+			<div class="btn btn-primary radius" > 总用户数访问数:</div> <div class="btn radius"> {{uv}}</div>
+		</span>
+	</div>
+	<!-- <div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="javascript:;" onclick="delChekedBike()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+			<a class="btn btn-primary radius" data-title="添加资讯" data-href="article-add.html" href="add.html"><i class="Hui-iconfont">&#xe600;</i> 添加单车</a>
+		</span>
+	</div> -->
+	
+	
+	<div class="content cl pd-5 bg-1 bk-gray mt-20" >
+		<ul class="accesslogsum" id="accesslogsum">
+			<li>
+				<span  >用户ip</span><span class="pipe">|</span>
+				<span class="f-r">访问次数</span>
+			</li>
+			<li v-for="accesslog in accesslogsum" >
+				<!-- <h3 @click="showfood(food.fid)">{{food.fname}}</h3>
+				<div :id=`fid${food.fid}` class="fooddesc" v-show="food.status">
+					<img :src=`image/${food.fphoto}` class="foodimg" />
+					<article class="foodprice">
+						<p>菜品描述：{{food.detail}}</p>
+						<p class="normalprice">原价：￥{{food.normprice}}</p>
+						<p class="realprice">特价：￥{{food.realprice}}</p>
+						<p class="buybtn" @click="addCart(food.fid,1)">加入购物车</p>
+					</article>
+				</div> -->
+				<span >{{accesslog.ipaddr}}</span><span class="pipe">|</span><span class="f-r" >{{accesslog.times}}</span>
+			</li>
+			
+			
+			
+			
+		</ul>
+	</div>
+	
+	
+	<!-- <div class="mt-20">
+		<form id="table-form">
+			<table class="table table-border table-bordered table-bg table-hover table-sort" width="100%">
+				<thead>
+					<tr class="text-c">
+						<th width="25"><input type="checkbox" /></th>
+						<th width="100">编号</th>
+						<th>状态</th>
+						<th>纬度</th>
+						<th>经度</th>
+						<th width="80">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+		</form>
+	</div> -->
+</div>
+
+<script type="text/javascript" src="../../static/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../../static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="../../static/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="../../static/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../../static/lib/laypage/1.2/laypage.js"></script>
+
+<script type="text/javascript" src="../../static/scripts/bike/list.js"></script>
+
+<!--  在网页里面引入javascript    大家注意顺序  -->
+	<script src="../../static/js/vue.js"></script>
+	<script src="../../static/js/axios.js" ></script>
+
+<script>
+let vm=new Vue({
+	el:"#app",
+	data:{
+		pv:'',			//总访问量
+		uv:'',			//总用户访问量
+		accesslogsum:{}    //日志统计
+	},
+	//页面加载后
+	mounted:function(){			
+		/* //发送请求:  检测用户是否登录   获取所有菜品      显示当前用户的购物车
+		axios.all(  [ checkLogin(),getAllFood() ,this.showCartInfo()] )
+		.then(  axios.spread(  (d1, d2)=>{
+			if( d1.data.code==1){
+				this.username=d1.data.obj.username;
+				this.loginbtnflag=false;
+				this.userflag=true;
+			}
+			d2.data.obj.forEach( (item,index)=>{
+				item.status=false;
+			})
+			this.foods=d2.data.obj;
+		} )   );
+	} *///发送请求:  检测用户是否登录   获取所有菜品      显示当前用户的购物车
+		axios.all(  [ getpv_uv(),getAccesslogsum()] )
+		.then(  axios.spread(  (d1, d2)=>{
+			if( d1.data.code==1){
+				this.pv=d1.data.obj.split(',')[0];
+				this.uv=d1.data.obj.split(',')[1];
+			}
+			console.log(d2.data.obj)
+			this.accesslogsum=d2.data.obj;
+			
+		} )   );
+	}
+	
+		/* axios.post('/bycicle/getpv_uv').then(  yc=>{
+			this.pv=yc.data.obj.split(',')[0];
+			this.uv=yc.data.obj.split(',')[1];
+		} ); */
+});
+
+function getpv_uv(){
+	return axios({
+		url:'/bycicle/getpv_uv',
+		method:'post'
+	})
+}
+
+function getAccesslogsum(){
+	return axios({
+		url:"/bycicle/getConsumerVisit",
+		method:'post'
+	});
+}
+
+/* $(function(){
+    $.ajax({
+    	url : "/bycicle/pv_uv",
+        type : "post",
+        dataType : "json",
+        success: function(user){
+        	console.log(user.obj.name+user.obj.phoneNum);
+            $("#user_name").text(user.obj.name);
+            $("#account").text(user.obj.phoneNum);
+        }
+    });
+}); */
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,bike-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="Bookmark" href="/favicon.ico"/>
+	<link rel="Shortcut Icon" href="/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="../../static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/H-ui.admin.css"/>
+	<link rel="stylesheet" type="text/css" href="../../static/lib/Hui-iconfont/1.0.8/iconfont.css"/>
+	<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/skin/default/skin.css" id="skin"/>
+	<link rel="stylesheet" type="text/css" href="../../static/h-ui.admin/css/style.css"/>
+</head>
+
+
+<body>
+<article class="page-container">
+	<form action="/user" class="form form-horizontal" id="form-user-edit">
+		<input id="uid" type="hidden" name="id"/>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>单车编号</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="" id="username" name="name" />
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>状态</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="gender" type="radio" id="0" value="未启用" checked="checked" />
+					<label for="0">未启用</label>
+				</div>
+				<div class="radio-box">
+					<input name="gender" type="radio" id="1" value="启用未解锁" />
+					<label for="1">启用未解锁</label>
+				</div>
+				<div class="radio-box">
+					<input name="gender" type="radio" id="2" value="开锁使用中" />
+					<label for="2">开锁使用中</label>
+				</div>
+				<div class="radio-box">
+					<input name="gender" type="radio" id="3" value="报修" />
+					<label for="3">报修</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea id="desc" name="description" cols="" rows="" class="textarea"></textarea>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+</body>
+<script type="text/javascript" src="../../static/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../../static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../../static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="../../static/h-ui.admin/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="../../static/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="../../static/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../../static/lib/laypage/1.2/laypage.js"></script>
+
+<script type="text/javascript" src="../../static/scripts/bike/list.js"></script>
+</html>
